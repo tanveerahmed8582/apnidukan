@@ -80,15 +80,17 @@ function authPublic(req, res, next) {
     jwt.verify(req.headers.authorization, process.env.JWT_SECRET_KEY_PRIVATE);
     console.log("Verified:", data);
     next();
-  } catch (error) {
+  } catch (err) {
+    console.log("PRIVATE ERROR:", err.message);
     try {
       const d = jwt.verify(
         req.headers.authorization,
         process.env.JWT_SECRET_KEY_PUBLIC,
       );
+      console.log("PUBLIC VERIFIED:", data);
       next();
-    } catch (error) {
-      console.log("JWT Error:", error.message);
+    } catch (err2) {
+      console.log("PUBLIC ERROR:", err2.message);
       res.status(401).send({
         result: "Fail",
         reason:
