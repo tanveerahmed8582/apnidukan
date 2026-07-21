@@ -77,13 +77,16 @@ function authPublic(req, res, next) {
   console.log("Authorization:", req.headers.authorization);
   console.log("PUBLIC KEY:", process.env.JWT_SECRET_KEY_PUBLIC);
   try {
-    jwt.verify(req.headers.authorization, process.env.JWT_SECRET_KEY_PRIVATE);
+    const data = jwt.verify(
+      req.headers.authorization,
+      process.env.JWT_SECRET_KEY_PRIVATE,
+    );
     console.log("Verified:", data);
     next();
   } catch (err) {
     console.log("PRIVATE ERROR:", err.message);
     try {
-      const d = jwt.verify(
+      const data = jwt.verify(
         req.headers.authorization,
         process.env.JWT_SECRET_KEY_PUBLIC,
       );
@@ -94,8 +97,8 @@ function authPublic(req, res, next) {
       res.status(401).send({
         result: "Fail",
         reason:
-          error.message === "invalid signature" ||
-          error.message === "jwt must be provided"
+          err2.message === "invalid signature" ||
+          err2.message === "jwt must be provided"
             ? "You are not Authorized to Access This API"
             : "Your login session has been Expired, Please login again",
       });
