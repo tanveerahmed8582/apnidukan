@@ -7,13 +7,14 @@ require("dotenv").config();
 require("./db-connect");
 
 const Router = require("./routes");
-var corsOptions = {
-  origin: "http://localhost:5173",
-  optionsSuccessStatus: 200,
-};
+// var corsOptions = {
+//   origin: "http://localhost:5173",
+//   optionsSuccessStatus: 200,
+// };
 
 const app = express();
-app.use(cors(corsOptions));
+//app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(express.json());
 
