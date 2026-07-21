@@ -74,8 +74,11 @@ function authBuyer(req, res, next) {
 }
 
 function authPublic(req, res, next) {
+  console.log("Authorization:", req.headers.authorization);
+  console.log("PUBLIC KEY:", process.env.JWT_SECRET_KEY_PUBLIC);
   try {
     jwt.verify(req.headers.authorization, process.env.JWT_SECRET_KEY_PRIVATE);
+    console.log("Verified:", data);
     next();
   } catch (error) {
     try {
@@ -85,6 +88,7 @@ function authPublic(req, res, next) {
       );
       next();
     } catch (error) {
+      console.log("JWT Error:", error.message);
       res.status(401).send({
         result: "Fail",
         reason:
